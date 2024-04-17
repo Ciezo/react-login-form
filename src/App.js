@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import CssBaseline from "@mui/material/CssBaseline";
+import Grid from "@mui/material/Grid";
+import LoginUser from "./pages/LoginUser";
+import RegisterUser from "./pages/RegisterUser";
+import UserHome from "./pages/UserHome";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+      <Router>
+        <CssBaseline />
+
+        {/* Main content goes here */}
+        <Grid
+          container
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+          sx={{ minHeight: "100vh" }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Grid item xs={3}>
+            <Routes>
+              <Route path="/" Component={ LoginUser }/>
+              <Route path="/register" Component={ RegisterUser }/>
+              {/* Authenticated Only */}
+              {/* ========================================================== */}
+              <Route path="/home" Component={ UserHome }/>
+              {/* ========================================================== */}
+            </Routes>
+          </Grid>
+        </Grid>
+      </Router>b
+    </>
   );
 }
-
-export default App;
