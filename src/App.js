@@ -12,27 +12,30 @@ export default function App() {
       <Router>
         <CssBaseline />
 
-        {/* Main content goes here */}
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          sx={{ minHeight: "100vh" }}
-        >
-          <Grid item xs={3}>
-            <Routes>
-              <Route path="/" Component={ LoginUser }/>
-              <Route path="/register" Component={ RegisterUser }/>
-              {/* Authenticated Only */}
-              {/* ========================================================== */}
-              <Route path="/home" Component={ UserHome }/>
-              {/* ========================================================== */}
-            </Routes>
+        <main>
+          {/* Main content goes here */}
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ minHeight: "100vh" }}
+          >
+            <Grid item xs={3}>
+              <Routes>
+                <Route path="/" Component={LoginUser} />
+                <Route path="/register" Component={RegisterUser} />
+                {/* Authenticated Only */}
+                {/* ========================================================== */}
+                <Route path="/home" Component={UserHome} />
+                {/* ========================================================== */}
+              </Routes>
+            </Grid>
           </Grid>
-        </Grid>
-      </Router>b
+        </main>
+      </Router>
+      b
     </>
   );
 }
