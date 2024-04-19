@@ -14,15 +14,31 @@ import { Link } from 'react-router-dom';
 import Copyright from './Copyright';
 
 export default function SignUpForm() {
+
+  // Form values
+  const [formData, setFormData] = React.useState({
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: '',
+  });
+
+  // Trigger onChange when form submits
+  const handleChange = (event) => {
+    const {name, value} = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  }
+
   const handleSubmit = (event) => {
+    // Stop page reload
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      firstname: data.get('firstName'),
-      lastname: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    /** Spread operator - iterates over an iterable object such as an array
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax  */
+    const user = { ...formData } 
+    console.log(user);
   };
 
   return (
@@ -46,27 +62,32 @@ export default function SignUpForm() {
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
+                  {/* First Name */}
                   <TextField
                     autoComplete="given-name"
-                    name="firstName"
+                    name="firstname"
                     required
                     fullWidth
-                    id="firstName"
+                    id="firstname"
                     label="First Name"
                     autoFocus
+                    onChange={handleChange}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
+                  {/* Last Name */}
                   <TextField
                     required
                     fullWidth
-                    id="lastName"
+                    id="lastname"
                     label="Last Name"
-                    name="lastName"
+                    name="lastname"
                     autoComplete="family-name"
+                    onChange={handleChange}
                   />
                 </Grid>
                 <Grid item xs={12}>
+                  {/* Email Address */}
                   <TextField
                     required
                     fullWidth
@@ -74,9 +95,11 @@ export default function SignUpForm() {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    onChange={handleChange}
                   />
                 </Grid>
                 <Grid item xs={12}>
+                  {/* Password */}
                   <TextField
                     required
                     fullWidth
@@ -85,6 +108,7 @@ export default function SignUpForm() {
                     type="password"
                     id="password"
                     autoComplete="new-password"
+                    onChange={handleChange}
                   />
                 </Grid>
                 <Grid item xs={12}>
