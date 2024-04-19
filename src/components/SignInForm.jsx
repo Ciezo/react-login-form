@@ -10,20 +10,58 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Copyright from './Copyright';
-
+import Alert from '@mui/material/Alert';
+import DangerousIcon from '@mui/icons-material/Dangerous';
 
 export default function SignInForm() {
-  const handleSubmit = (event) => {
+
+  // Form values
+  const [formData, setFormData] = React.useState({
+    email: '',
+    password: '',
+  });
+
+  // Fail prompt when user failed to log-in
+  const [isError, setError] = React.useState(false);
+
+  // Trigger onChange when form submits
+  const handleChange = (event) => {
+    const {name, value} = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  }
+
+  // Redirect
+  const navigate = useNavigate();
+
+
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      firstname: data.get('firstName'),
-      lastname: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    
+    const user = { ...formData } 
+    
+    /**
+     * @TODO
+     * - Integrate a Spring Boot backend integration
+     *    -- Set-up JWTs
+     *    -- Assign User cookies
+     * 
+     * - Implement User Session Management (cookies) using react-auth-kit
+     * - Implement signIn() from react-auth-kit
+     */
+
+    if(user) {
+      navigate("/home");
+    } else {
+      setError(true);
+      console.log("Something went wrong!");
+    }
+
   };
 
   return (
@@ -47,6 +85,13 @@ export default function SignInForm() {
             <Typography component="h1" variant="h6">
               Welcome, back!
             </Typography>
+
+            {/* Error prompt when user cannot log-in due to invalid credentials */}
+            {isError && <Alert icon={<DangerousIcon fontSize="inherit" />} severity="error">
+              Sorry, you may have entered the wrong username or password. Please, try again!
+            </Alert>
+            } 
+
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
@@ -57,6 +102,7 @@ export default function SignInForm() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                onChange={handleChange}
               />
               <TextField
                 margin="normal"
@@ -67,6 +113,7 @@ export default function SignInForm() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={handleChange}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
