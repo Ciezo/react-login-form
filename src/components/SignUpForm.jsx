@@ -10,32 +10,16 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © Cloyd Van Secuya'}
-      <br />
-      <Link color="inherit" to="https://cloydvansecuya-blog.vercel.app/">
-        My Portfolio
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
-
-const defaultTheme = createTheme();
+import Copyright from './Copyright';
 
 export default function SignUpForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      firstname: data.get('firstName'),
+      lastname: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
     });
@@ -43,7 +27,6 @@ export default function SignUpForm() {
 
   return (
     <>
-      <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
@@ -130,7 +113,6 @@ export default function SignUpForm() {
           </Box>
           <Copyright sx={{ mt: 5 }} />
         </Container>
-      </ThemeProvider>
     </>
   );
 }
