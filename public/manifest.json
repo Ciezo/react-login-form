@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "User | Sign-in and Sign-up | Material UI",
+  "name": "A simple project that encompasses the user login and sign-up bootstrapped with React.js and Material UI",
   "icons": [
     {
       "src": "favicon.ico",
