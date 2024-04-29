@@ -14,6 +14,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Copyright from './Copyright';
 import Alert from '@mui/material/Alert';
 import DangerousIcon from '@mui/icons-material/Dangerous';
+import useSignIn from 'react-auth-kit/hooks/useSignIn';
 
 export default function SignInForm() {
 
@@ -22,6 +23,8 @@ export default function SignInForm() {
     email: '',
     password: '',
   });
+
+  const signIn = useSignIn();
 
   // Fail prompt when user failed to log-in
   const [isError, setError] = React.useState(false);
@@ -43,7 +46,7 @@ export default function SignInForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    const user = { ...formData } 
+    const userSigningIn = { ...formData } 
     
     /**
      * @TODO
@@ -55,13 +58,37 @@ export default function SignInForm() {
      * - Implement signIn() from react-auth-kit
      */
 
-    if(user) {
-      navigate("/home");
-    } else {
-      setError(true);
-      console.log("Something went wrong!");
-    }
+    try {
+      const response = await fetch('http://localhost:18080/api/user-service/v1/auth/authenticate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userSigningIn) 
+      })
 
+      /** Extract the token */
+      const sessionToken = await response.json();
+
+      /** Authenticate using react-auth-kit */
+      if(signIn({
+        auth: {
+          token: sessionToken.token,
+          type: 'Bearer'
+        },
+        userState: {
+          user: userSigningIn.email,
+          role: "USER"
+        }
+      })) {
+        // Upon successful signin, redirect the user to home
+        navigate("/home");
+      }
+
+    } catch (error) {
+      setError(true);
+      console.log("Something wrong may have happened with sending a request to the backend!");
+      console.log("Cannot login user...");
+      console.error(error);
+    }
   };
 
   return (
@@ -85,6 +112,7 @@ export default function SignInForm() {
             <Typography component="h1" variant="h6">
               Welcome, back!
             </Typography>
+            <small>Submit your registered email and password to login</small>
 
             {/* Error prompt when user cannot log-in due to invalid credentials */}
             {isError && <Alert icon={<DangerousIcon fontSize="inherit" />} severity="error">
