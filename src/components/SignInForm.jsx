@@ -48,16 +48,6 @@ export default function SignInForm() {
     
     const userSigningIn = { ...formData } 
     
-    /**
-     * @TODO
-     * - Integrate a Spring Boot backend integration
-     *    -- Set-up JWTs
-     *    -- Assign User cookies
-     * 
-     * - Implement User Session Management (cookies) using react-auth-kit
-     * - Implement signIn() from react-auth-kit
-     */
-
     try {
       const response = await fetch('http://localhost:18080/api/user-service/v1/auth/authenticate', {
         method: 'POST',
