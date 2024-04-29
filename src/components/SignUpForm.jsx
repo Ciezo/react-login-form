@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Copyright from './Copyright';
 import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
@@ -25,6 +25,7 @@ export default function SignUpForm() {
     email: '',
     password: '',
   });
+  const role = "USER";
 
   // Successful user registration prompt
   const [isSuccess, setSuccess] = React.useState(false);
@@ -40,18 +41,17 @@ export default function SignUpForm() {
     }));
   }
 
-
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     // Stop page reload
     event.preventDefault();
     /** Spread operator - iterates over an iterable object such as an array
      * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax  */
-    const user = { ...formData } 
-    console.log(user);
+    const user = { ...formData, role }; 
 
     try {
-      const response = await fetch('http://localhost:8001/users', {
+      const response = await fetch('http://localhost:18080/api/user-service/v1/auth/register', {
         method: 'POST',
         headers: { 'Content-Type' : 'application/json' },
         body: JSON.stringify(user) 
@@ -59,7 +59,8 @@ export default function SignUpForm() {
       
       if (response.ok) {
         setSuccess(true);
-        console.log("User registered successfully!")
+        // Redirect to login page
+        navigate("/");
       } else {
         setError(true);
         console.log("User registered failed!")
